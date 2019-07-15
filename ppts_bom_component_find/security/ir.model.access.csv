@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mrp_find_user,mrp.bom.component.find.wizard,ppts_bom_component_find.model_mrp_bom_component_find_wizard,mrp.group_mrp_user,1,1,1,1
+access_mrp_find_manager,mrp.bom.component.find.wizard,ppts_bom_component_find.model_mrp_bom_component_find_wizard,mrp.group_mrp_manager,1,1,1,1
+access_mrp_find_line_user,mrp.bom.component.find.line,ppts_bom_component_find.model_mrp_bom_component_find_line,mrp.group_mrp_user,1,1,1,1
+access_mrp_find_line_manager,mrp.bom.component.find.line,ppts_bom_component_find.model_mrp_bom_component_find_line,mrp.group_mrp_manager,1,1,1,1

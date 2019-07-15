@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="account_report_standard_view" model="ir.ui.view">
+		<field name="name">Standard Ledger</field>
+		<field name="model">account.report.standard.ledger</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+			<form string="Report Options">
+				<!-- class="oe_form_configuration"> -->
+				<!-- <group>
+					 <group>
+						 <label for="template_id"/>
+						 <div>
+							 <field name="template_id" class="oe_inline" domain="[('company_id','=',company_id)]"/>
+							 <button name="action_save_template" class="oe_inline" string="SAVE" type="object" attrs="{'invisible':[('template_id','=',False)]}"/>
+							 <button name="action_open_templates" class="oe_inline" string="OPEN TEMPLATES" type="object"/>
+						 </div>
+					 </group>
+				 </group>-->
+				<group>
+					<field name="ledger_type" widget="radio" options="{'horizontal': true}"/>
+					<field name="summary"/>
+					<field name="target_move"/>
+					<field name="reconciled"/>
+					<!-- <field name="compact_account" attrs="{'readonly': [('ledger_type', '!=', 'general')]}"/>-->
+					<field name="result_selection" attrs="{'invisible': [('ledger_type', 'not in', ('partner', 'aged',))]}"/>
+					<field name="date_from"/>
+					<field name="date_to"/>
+					<field name="all_partners" attrs="{'invisible': [('ledger_type', '!=', 'partner')]}"/>
+					<field name="partner_select_ids" widget="many2many_tags" options="{'no_create': True}" attrs="{'invisible': ['|',('ledger_type', '!=', 'partner'),('all_partners', '=', True)]}"/>
+					<field name="account_in_ex_clude_ids" widget="many2many_tags" options="{'no_create': True}"/>
+					<field name="account_methode" attrs="{'invisible':[('account_in_ex_clude_ids', '=', [])]}"/>
+					<field name="analytic_account_select_ids" widget="many2many_tags" options="{'no_create': True}" attrs="{'invisible': [('ledger_type', '!=', 'analytic')]}"/>
+					<field name="init_balance_history"/>
+					<field name="company_id"/>
+					<field name="company_currency_id"/>
+				</group>
+				<footer>
+					<button name="action_view_lines" string="View Lines" type="object"/>
+					<button name="print_pdf_report" string="Print PDF" type="object" default_focus="1" class="oe_highlight"/>
+					<button name="print_excel_report" string="Excel File" type="object"/>
+					<!--<button string="Discard" class="btn-default" special="cancel"/>-->
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_account_standard_report" model="ir.actions.act_window">
+		<field name="name">Standard Report</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">account.report.standard.ledger</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="account_report_standard_view"/>
+		<field name="target">new</field>
+	</record>
+
+	<menuitem id="menu_account_standard_report" name="Standard Report" sequence="0" parent="account.menu_finance_reports" action="action_account_standard_report" groups="account.group_account_user"/>
+
+</odoo>

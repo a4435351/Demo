@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<!-- Stock Move Inherit -->
+	<record id="view_move_form_price_inherit" model="ir.ui.view">
+		<field name="name">stock.move.form.inherit</field>
+		<field name="model">stock.move</field>
+		<field name="inherit_id" ref="stock.view_move_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//group[@name='main_grp']" position="after">
+				<group name="process_price" string="Process Price">
+					<field name="create_date" />
+					<field name="cost_price" />
+					<field name="update_date" />
+					<field name="cost_price_update" />
+				</group>
+			</xpath>
+		</field>
+	</record>
+	
+</odoo>

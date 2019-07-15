@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="journal_entries_report_id">
+        <t t-call="journal_entries_print.external_layout_standard">
+            <t t-foreach="docs" t-as="o">
+                <div class="page" style="font-size:15px;font-family: Calibri;">
+                    <div style="margin-left:0px">
+                        <br/>
+                        <br/>
+                        <table width="100%" style="line-height:12pt;">
+                            <thead>
+                                <th width="50%" style="border-bottom: 1px solid #868080;border-top: 1px solid #868080;" >Particulars
+                                </th>
+                                <th width="25%" style="text-align: center;border-bottom: 1px solid #868080;border-left: 1px solid #868080;border-top: 1px solid #868080;">Debit
+                                </th>
+                                <th width="25%" style="text-align: center;border-bottom: 1px solid #868080;border-left: 1px solid #868080;border-top: 1px solid #868080;">Credit
+                                </th>
+                            </thead>
+                            <tbody>
+                                <td>
+                                    <span style="font-weight: 600;">Account :</span><br/>
+                                    <t t-if="o.total_debit_credit().get('partner')">
+                                        <span t-if="o.total_debit_credit().get('partner')" style="margin-left: 20px;font-weight: 600;" t-esc="o.total_debit_credit().get('partner')"/>
+                                        <br/>
+                                    </t>
+                                    <t t-foreach="o.line_ids" t-as="line">
+                                        <span style="margin-left: 20px;" t-field="line.account_id.name"/><br/>
+                                    </t>
+                                    <br/>
+                                    <span style="font-weight: 600;">Through :</span><br/>
+                                    <span style="margin-left: 20px;" t-field="o.journal_id.name"/>
+                                    <br/>
+                                    <br/>
+                                    <span style="font-weight: 600;">On Account of :</span><br/>
+                                    <span style="margin-left: 20px;" t-field="o.narration"/><br/>
+                                    <br/>
+                                    <span style="font-weight: 600;">Amount (in words) :</span><br/>
+                                    <span style="margin-left: 20px;" t-esc="o.total_debit_credit().get('amt_in_words')"/>
+                                </td>
+                                <td style="text-align:end;border-left: 1px solid #868080;    border-bottom: 1px solid #868080;">
+                                    <br/>
+                                    <t t-if="o.total_debit_credit().get('partner')">
+                                        <br/>
+                                    </t>
+                                    <t t-foreach="o.line_ids" t-as="line">
+                                        <span style="font-weight: 600;" t-field="line.debit"/><br/>
+                                    </t>
+                                </td>
+                                <td style="text-align:end;border-left: 1px solid #868080;border-bottom: 1px solid #868080;">
+                                    <br/>
+                                    <t t-if="o.total_debit_credit().get('partner')">
+                                        <br/>
+                                    </t>
+                                    <t t-foreach="o.line_ids" t-as="line">
+                                        <span style="font-weight: 600;" t-field="line.credit"/><br/>
+                                    </t>
+                                </td>
+                            </tbody>
+                        </table>
+                        <table width="100%">
+                            <tr>
+                                <td width="50%">
+                                </td>
+                                <td width="25%" style="text-align:end;border-bottom:1px solid #868080;border-left:1px solid #868080">
+                                    <span style="font-weight: 600;" t-esc="o.total_debit_credit().get('currency')"/>
+                                    <span style="font-weight: 600;" t-esc="'{0:,.2f}'.format(int(o.total_debit_credit().get('dr_total')))"/>
+                                </td>
+                                <td width="25%" style="text-align:end;border-bottom:1px solid #868080;border-left:1px solid #868080">
+                                    <span style="font-weight: 600;" t-esc="o.total_debit_credit().get('currency')"/>
+                                    <span style="font-weight: 600;" t-esc="'{0:,.2f}'.format(int(o.total_debit_credit().get('cr_total')))"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%">
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <td width="25%" style="text-align: center;">
+                                <span t-field="o.create_uid.name" /><br/>
+                                <span style="font-weight: 600;">Prepared By </span>
+                            </td>
+                            <td width="25%" style="text-align: center;">
+                                <span t-field="o.post_user.name" /><br/>
+                                <span style="font-weight: 600;">Passed By</span>
+                            </td>
+                            <td width="25%" style="text-align: center;">
+                                <br/>
+                                <span style="font-weight: 600;">Director</span>
+                            </td>
+                            <td width="25%" style="text-align: center;">
+                                <br/>
+                                <span style="font-weight: 600;">Receiver's Signature</span>
+                            </td>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- External layouts styles -->
+
+    <template id="external_layout_standard">
+
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc" />
+        </t>
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id.sudo()" />
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company" />
+        </t>
+        <div class="header">
+            <t t-foreach="docs" t-as="o">
+                <!-- <img t-if="company.logo"
+                    t-att-src="'data:image/png;base64,%s' % to_text(company.logo)"
+                    class="pull-left"/> -->
+                <div class="pull-left company_address" style="padding-top:14px;line-height:16px;font-family: Calibri;" >
+                    <div>
+                        <strong><span style="font-size: 25px;" t-field="company.partner_id.name" /></strong>
+                        <br />
+                        <span t-field="o.company_id.street" />
+                        <span t-field="o.company_id.street2" />
+                        <br />
+                        <span t-field="o.company_id.city" />
+                        - 
+                        <span t-field="o.company_id.zip" />
+                        ,
+                        <span t-field="o.company_id.state_id" />
+                        ,
+                        <span t-field="o.company_id.country_id" />
+                        <br />
+                        <span>Phone :</span>
+                        <span t-field="o.company_id.phone" />, 
+                        <span>GSTIN:</span>
+                        <span t-field="o.company_id.vat" />
+                        <br />
+                        <span>E-mail:</span>
+                        <span t-field="o.company_id.email" />
+                    </div>  
+                </div>
+                <div width="33%" class="top-right" style="float:right;text-align:end;font-size:10px;">
+                    <p>
+                        <h6>
+                            <span t-field="o.journal_id.name"/>
+                        </h6>
+                        <span t-field="o.name"/><br/>
+                        <span t-field="o.date" t-options='{"format": "dd-MM-yyyy"}'/>
+                    </p>
+                </div>
+            </t>
+
+        </div>
+
+        <div class="article o_report_layout_standard">
+            <t t-raw="0" />
+        </div>
+
+        <div class="footer">
+        </div>
+
+    </template>
+
+    <report 
+        id="journal_entries_moce_print_id"
+        model = "account.move"
+        string = "Voucher"
+        report_type = "qweb-pdf"
+        name = "journal_entries_print.journal_entries_report_id"  
+        file = "journal_entries_print.journal_entries_report_id"
+    />
+ 
+    <record id="journal_entries_paperformat" model="report.paperformat">
+        <field name="name">Voucher</field>
+        <field name="default">false</field>
+        <field name="format">custom</field>
+        <field name="page_height">150</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">20</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">18</field>
+        <field name="dpi">90</field>
+        <field name="report_ids" eval="[(4, ref('journal_entries_moce_print_id'))]"/>
+   </record>
+
+
+   <template id="journal_entries_report_id_a4">
+        <t t-call="journal_entries_print.external_layout_standard">
+            <t t-foreach="docs" t-as="o">
+                <div class="page" style="font-size:15px;font-family: Calibri;">
+                    <div style="margin-left:0px">
+                        <br/>
+                        <br/>
+                        <table width="100%" style="line-height:12pt;">
+                            <thead>
+                                <th width="50%" style="border-bottom: 1px solid #868080;border-top: 1px solid #868080;" >Particulars
+                                </th>
+                                <th width="25%" style="text-align: center;border-bottom: 1px solid #868080;border-left: 1px solid #868080;border-top: 1px solid #868080;">Debit
+                                </th>
+                                <th width="25%" style="text-align: center;border-bottom: 1px solid #868080;border-left: 1px solid #868080;border-top: 1px solid #868080;">Credit
+                                </th>
+                            </thead>
+                            <tbody>
+                                <td>
+                                    <span style="font-weight: 600;">Account :</span><br/>
+                                    <t t-if="o.total_debit_credit().get('partner')">
+                                        <span style="margin-left: 20px;font-weight: 600;" t-esc="o.total_debit_credit().get('partner')"/>
+                                        <br/>
+                                    </t>
+                                    <t t-foreach="o.line_ids" t-as="line">
+                                        <span style="margin-left: 20px;" t-field="line.account_id.name"/><br/>
+                                    </t>
+                                    <br/>
+                                    <span style="font-weight: 600;">Through :</span><br/>
+                                    <span style="margin-left: 20px;" t-field="o.journal_id.name"/>
+                                    <br/>
+                                    <br/>
+                                    <span style="font-weight: 600;">On Account of :</span><br/>
+                                    <span style="margin-left: 20px;" t-field="o.narration"/><br/>
+                                    <br/>
+                                    <span style="font-weight: 600;">Amount (in words) :</span><br/>
+                                    <span style="margin-left: 20px;" t-esc="o.total_debit_credit().get('amt_in_words')"/>
+                                </td>
+                                <td style="text-align:end;border-left: 1px solid #868080;    border-bottom: 1px solid #868080;">
+                                    <br/>
+                                    <t t-if="o.total_debit_credit().get('partner')">
+                                        <br/>
+                                    </t>
+                                    <t t-foreach="o.line_ids" t-as="line">
+                                        <span style="font-weight: 600;" t-field="line.debit"/><br/>
+                                    </t>
+                                </td>
+                                <td style="text-align:end;border-left: 1px solid #868080;border-bottom: 1px solid #868080;">
+                                    <br/>
+                                    <t t-if="o.total_debit_credit().get('partner')">
+                                        <br/>
+                                    </t>
+                                    <t t-foreach="o.line_ids" t-as="line">
+                                        <span style="font-weight: 600;" t-field="line.credit"/><br/>
+                                    </t>
+                                </td>
+                            </tbody>
+                        </table>
+
+                        <table width="100%">
+                            <tr>
+                                <td width="50%">
+                                </td>
+                                <td width="25%" style="text-align:end;border-bottom:1px solid #868080;border-left:1px solid #868080">
+                                    <span style="font-weight: 600;" t-esc="o.total_debit_credit().get('currency')"/>
+                                    <span style="font-weight: 600;" t-esc="'{0:,.2f}'.format(int(o.total_debit_credit().get('dr_total')))"/>
+                                </td>
+                                <td width="25%" style="text-align:end;border-bottom:1px solid #868080;border-left:1px solid #868080">
+                                    <span style="font-weight: 600;" t-esc="o.total_debit_credit().get('currency')"/>
+                                    <span style="font-weight: 600;" t-esc="'{0:,.2f}'.format(int(o.total_debit_credit().get('cr_total')))"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%">
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <td width="25%" style="text-align: center;">
+                                <span t-field="o.create_uid.name" /><br/>
+                                <span style="font-weight: 600;">Prepared By </span>
+                            </td>
+                            <td width="25%" style="text-align: center;">
+                                <span t-field="o.post_user.name" /><br/>
+                                <span style="font-weight: 600;">Passed By</span>
+                            </td>
+                            <td width="25%" style="text-align: center;">
+                                <br/>
+                                <span style="font-weight: 600;">Director</span>
+                            </td>
+                            <td width="25%" style="text-align: center;">
+                                <br/>
+                                <span style="font-weight: 600;">Receiver's Signature</span>
+                            </td>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+   <report 
+    id="journal_entries_moce_print_id_a4"
+    model = "account.move"
+    string = "Voucher A4"
+    report_type = "qweb-pdf"
+    name = "journal_entries_print.journal_entries_report_id_a4"  
+    file = "journal_entries_print.journal_entries_report_id_a4"
+    />
+
+    <record id="journal_entries_paperformat_a4" model="report.paperformat">
+        <field name="name">Voucher A4</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">20</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">18</field>
+        <field name="dpi">90</field>
+        <field name="report_ids" eval="[(4, ref('journal_entries_moce_print_id_a4'))]"/>
+    </record>
+</odoo>

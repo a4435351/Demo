@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+	<data> 
+	
+		<record id="view_account_petty_cash_tree" model="ir.ui.view">
+			<field name="name">account.petty.cash.tree</field>
+			<field name="model">account.petty.cash</field>
+			<field name="priority">2</field>
+			<field name="arch" type="xml">
+				<tree string="Account Petty Cash" default_order="name desc">
+					<field name="name" />
+					<field name="create_date" />
+					<field name="employee_id" />
+					<field name="amount" />
+					<field name="approver_id" />
+					<field name="state" />
+				</tree>
+			</field>
+		</record>
+	
+		<record id="view_account_petty_cash_form" model="ir.ui.view">
+			<field name="name">account.petty.cash.form</field>
+			<field name="model">account.petty.cash</field>
+			<field name="arch" type="xml">
+				<form string="Account Petty Cash" class="o_sale_order">
+					<header>
+						<button string="Send For Approval" name="send_for_approval"
+							type="object" class="oe_highlight" states="new"
+							groups="account.group_account_user" />
+						<button string="Approve" name="approve_form" type="object"
+							class="oe_highlight" states="send_approval"
+							groups="account.group_account_manager" />
+						<button string="Pay" name="pay_form" type="object"
+							class="oe_highlight" states="approve"
+							groups="account.group_account_manager" />
+						<button string="Update Expense" name="start_process" type="object"
+							class="oe_highlight" states="paid"
+							groups="account.group_account_user" />
+						<button string="Update" name="updated_form" type="object"
+							class="oe_highlight" states="in_progress"
+							groups="account.group_account_user" />
+						<button string="Post Journal Entries"
+							name="post_journal_entries" type="object" class="oe_highlight"
+							states="updated" groups="account.group_account_manager" />
+						<field name="state" widget="statusbar"
+							statusbar_visible="new,send_approval,approve,paid,in_progress,updated,done" />
+					</header>
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+							<button name="action_view_journal_entries" type="object"
+								class="oe_stat_button" icon="fa-money" states="paid,in_progress,updated,done">
+								<field name="journal_entries_counts" widget="statinfo" />
+							</button>
+							<button name="action_view_attached_doc" type="object"
+								class="oe_stat_button" icon="fa-money" states="done">
+								<field name="attached_doc_counts" widget="statinfo" />
+							</button>
+						</div>
+						<div class="oe_title">
+							<h1>
+								<field name="name" readonly="1" />
+							</h1>
+						</div>
+						<group>
+							<group>
+								<field name="create_date"
+									attrs="{'readonly': [('state', '!=', 'new')]}" />
+								<field name="employee_id"
+									attrs="{'readonly': [('state', '!=', 'new')]}"
+									options="{'no_create': True}" />
+								<field name="company_id" />
+								<field name="payment_journal_id"
+									attrs="{'readonly': [('state', 'not in', ('new','send_approval'))]}" />
+								<field name="account_id" />
+								<field name="pettycash_journal_id"
+									attrs="{'readonly': [('state', 'not in', 'updated')],'required': [('state','=', 'updated')]}" />
+								<field name="created_user_id" invisible="1" />
+								<field name="account_move_id" invisible="1" />
+							</group>
+							<group>
+								<field name="from_date"
+									attrs="{'readonly': [('state', '!=', 'new')]}" />
+								<field name="to_date"
+									attrs="{'readonly': [('state', '!=', 'new')]}" />
+								<label for="amount" />
+								<div class="o_row">
+									<field name="amount" string="Petty Cash Amount"
+										attrs="{'readonly': [('state', 'not in', ('new','send_approval'))]}" />
+									<field name="company_currency_id" />
+								</div>
+								<field name="approver_id" />
+								<field name="is_user" invisible="1" />
+								<field name="amount_setteld" />
+							</group>
+						</group>
+						<notebook>
+							<page string="Expenses" states="in_progress,updated,done">
+								<field name="expenses_ids"
+									attrs="{'readonly': ['|',('state', '=', 'done'),('is_user','=',True)]}">
+									<tree string="Petty Cash Expenses" editable="bottom">
+										<field name="date" />
+										<field name="expenses_category_id" />
+										<field name="account_id" />
+										<field name="ref_no" />
+										<field name="remarks" />
+										<field name="file_name" invisible="1" />
+										<field name="attachments" widget="binary"
+											filename="file_name" />
+										<field name="exp_amount" />
+									</tree>
+									<form string="Petty Cash Expenses">
+										<sheet>
+											<group>
+												<group>
+													<field name="date" />
+													<field name="expenses_category_id" />
+													<field name="account_id" />
+													<field name="exp_amount" />
+												</group>
+												<group>
+													<field name="ref_no" />
+													<field name="remarks" />
+													<field name="file_name" />
+													<field name="attachments" filename="file_name" />
+												</group>
+											</group>
+										</sheet>
+									</form>
+								</field>
+								<group class="oe_subtotal_footer oe_right" colspan="2"
+									name="sale_total" states="approve,in_progress,updated,done">
+									<field name="amount_total" widget='monetary' />
+									<field name="to_pay" widget='monetary' />
+									<field name="to_receive" widget='monetary' />
+								</group>
+							</page>
+						</notebook>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" />
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
+		
+		<record id="view_account_petty_cash_pivot" model="ir.ui.view">
+	         <field name="name">petty.cash.report.pivot</field>
+	         <field name="model">petty.cash.report</field>
+	         <field name="arch" type="xml">
+	             <pivot string="Petty Cash Report" disable_linking="True">
+	                <field name="date" interval="month" />
+	                <field name="employee_id" type="row"/>
+					<field name="expenses_category_id" type="row" />
+					<field name="account_id" type="row" />
+					<field name="approver_id" type="row" />
+					<field name="exp_amount" type="measure" />
+	             </pivot>
+	         </field>
+	    </record>
+		
+		<record id="action_account_petty_cash_menu"
+			model="ir.actions.act_window">
+			<field name="name">Account Petty Cash</field>
+			<field name="cvv">ir.actions.act_window</field>
+			<field name="res_model">account.petty.cash</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click here to create a record
+				</p>
+			</field>
+		</record>
+		
+		<record id="action_account_petty_cash_pivot_report_menu" model="ir.actions.act_window">
+			<field name="name">Petty Cash Report</field>
+			<field name="res_model">petty.cash.report</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">pivot</field>
+			<field name="view_id"></field>
+		</record>
+	
+		<menuitem name="Account Petty Cash"
+			parent="account_accountant.menu_accounting" id="account_petty_cash_menu" sequence="9" 
+			groups="account.group_account_user" />
+	
+		<menuitem action="action_account_petty_cash_menu"
+			id="account_petty_cash_sub_menu" parent="account_petty_cash_menu"
+			name="Account Petty Cash Receipt" groups="account.group_account_user"/>
+		<menuitem action="action_account_petty_cash_pivot_report_menu"
+			id="account_petty_cash_pivot_report_sub_menu" parent="account_petty_cash_menu"
+			name="Petty Cash Report" groups="account.group_account_user"/>
+		
+		<record id="view_account_petty_cash_config_settings_inherit"
+			model="ir.ui.view">
+			<field name="name">res.config.settings.petty.cash.inherit</field>
+			<field name="model">res.config.settings</field>
+			<field name="inherit_id" ref="account.res_config_settings_view_form" />
+			<field name="arch" type="xml">
+				<div id="recommended_apps" position="after">
+					<h2 groups="account.group_account_user">Petty Cash</h2>
+					<div class="row mt16 o_settings_container" id="petty_cash"
+						groups="account.group_account_user">
+						<div class="col-xs-12 col-md-6 o_setting_box" id="eu_service">
+							<div class="o_setting_right_pane">
+								<label for="petty_cash_account_id" />
+								<div name="account_account_config">
+									<field name="petty_cash_account_id" style="width:354px" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</field>
+		</record>
+		
+		<record id="expense_category_view_form" model="ir.ui.view">
+			<field name="name">expenses.category.form</field>
+			<field name="model">expenses.category</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<field name="name" required="True" />
+							<field name="account_id" required="True" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="expense_category_view_tree">
+			<field name="name">expenses.category.tree</field>
+			<field name="model">expenses.category</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+					<field name="account_id" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="expense_category_action_menu" model="ir.actions.act_window">
+			<field name="name">Expenses Category</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">expenses.category</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[]</field>
+			<field name="context">{}</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click here to create an Expense Category
+				</p>
+			</field>
+		</record>
+		
+		<menuitem id="menu_expenses_category" action="expense_category_action_menu"
+			name="Expenses Category" parent="account_petty_cash_menu"
+			groups="account.group_account_user" sequence="11" />
+		
+	</data>
+</odoo>
+	

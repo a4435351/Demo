@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_petty_cash_manager,account.petty.cash,model_account_petty_cash,account.group_account_manager,1,1,1,1
+access_account_petty_cash_accountant,account.petty.cash,model_account_petty_cash,account.group_account_user,1,1,1,0
+access_account_petty_cash_billing,account.petty.cash,model_account_petty_cash,account.group_account_invoice,1,1,1,0
+access_petty_cash_expenses_manager,petty.cash.expenses,model_petty_cash_expenses,account.group_account_manager,1,1,1,1
+access_petty_cash_expenses_accountant,petty.cash.expenses,model_petty_cash_expenses,account.group_account_user,1,1,1,1
+access_petty_cash_expenses_billing,petty.cash.expenses,model_petty_cash_expenses,account.group_account_invoice,1,1,1,0
+access_petty_cash_report_manager,petty.cash.report,model_petty_cash_report,account.group_account_manager,1,1,1,0
+access_petty_cash_report_accountant,petty.cash.report,model_petty_cash_report,account.group_account_user,1,1,1,0
+access_petty_cash_report_invoice,petty.cash.report,model_petty_cash_report,base.group_user,1,1,1,0
+access_expenses_manager,expenses.category,model_expenses_category,account.group_account_manager,1,1,1,1
+access_expenses_accountant,expenses.category,model_expenses_category,account.group_account_user,1,1,1,1
+access_expenses_billing,expenses.category,model_expenses_category,account.group_account_invoice,1,1,1,0
+access_expenses_category_res_users,res.users,base.model_res_users,account.group_account_invoice,1,1,1,0
