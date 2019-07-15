@@ -8,6 +8,7 @@ class StockPicking(models.Model):
     mrp_do_no = fields.Char(string='DO No')
     carrier = fields.Char(string='Carrier')
     
+    
     @api.model
     def create(self, vals):
         if vals.get('backorder_id'):
