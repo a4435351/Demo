@@ -1,0 +1,98 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* app_stock_mts_else_mto
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0+e-20190512\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-07 15:06+0000\n"
+"PO-Revision-Date: 2019-06-07 15:06+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: app_stock_mts_else_mto
+#: code:addons/app_stock_mts_else_mto/models/stock_rule.py:33
+#, python-format
+msgid "<br>A need is created in <b>%s</b> and a rule will be triggered to fulfill it."
+msgstr "<br>需求产生于 <b>%s</b> ，为满足这个需求，规则将会被触发。"
+
+#. module: app_stock_mts_else_mto
+#: code:addons/app_stock_mts_else_mto/models/stock_rule.py:35
+#, python-format
+msgid "<br>If the products are not available in <b>%s</b>, a rule will be triggered to bring products in this location."
+msgstr "<br>如果产品数量在此库位 <b>%s</b> 数量不足, 将由此库位创建一个高级补货需求。"
+
+#. module: app_stock_mts_else_mto
+#: code:addons/app_stock_mts_else_mto/models/stock_warehouse.py:31
+#, python-format
+msgid "MTS else MTO"
+msgstr "优先用库存，不足则按单生成"
+
+#. module: app_stock_mts_else_mto
+#: code:addons/app_stock_mts_else_mto/hooks.py:45
+#, python-format
+msgid "Make To Order"
+msgstr "按订单生成"
+
+#. module: app_stock_mts_else_mto
+#: model:ir.model.fields,field_description:app_stock_mts_else_mto.field_stock_rule__procure_method
+msgid "Move Supply Method"
+msgstr "移动供应方法"
+
+#. module: app_stock_mts_else_mto
+#: code:addons/app_stock_mts_else_mto/models/stock_rule.py:53
+#, python-format
+msgid "No source location defined on stock rule: %s!"
+msgstr "库存规则: %s 没有定义来源位置!"
+
+#. module: app_stock_mts_else_mto
+#: model:ir.model,name:app_stock_mts_else_mto.model_stock_rule
+msgid "Stock Rule"
+msgstr "库存规则"
+
+#. module: app_stock_mts_else_mto
+#: selection:stock.rule,procure_method:0
+msgid "Take From Stock"
+msgstr "从库存获取"
+
+#. module: app_stock_mts_else_mto
+#: selection:stock.rule,procure_method:0
+msgid "Take From Stock, if unavailable, Trigger Another Rule"
+msgstr "从库存获取，如果数量不足则触发规则"
+
+#. module: app_stock_mts_else_mto
+#: model:ir.model.fields,help:app_stock_mts_else_mto.field_stock_rule__procure_method
+msgid "Take From Stock: the products will be taken from the available forecasted stock of the source location.\n"
+"Trigger Another Rule: the system will try to find a stock rule to bring the products in the source location. The available stock will be ignored.\n"
+"Take From Stock, if Unavailable, Trigger Another Rule: the products will be taken from the available stock of the source location.If there is no stock available, the system will try to find a  rule to bring the products in the source location."
+msgstr "从库存中获取：产品将从来源库位的可用在途库存中获取。\n"
+"触发其他规则: 系统将尝试从来源库位中匹配高级补货规则。可用库存将被忽略。\n"
+"从库存获取，如果数量不足则触发规则: 产品将优先尝试从来源库位的可用库存中获取。如果数量不足，系统将尝试从来源库位中匹配高级补货规则。"
+
+#. module: app_stock_mts_else_mto
+#: selection:stock.rule,procure_method:0
+msgid "Trigger Another Rule"
+msgstr "触发其他规则"
+
+#. module: app_stock_mts_else_mto
+#: model:ir.model,name:app_stock_mts_else_mto.model_stock_warehouse
+msgid "Warehouse"
+msgstr "仓库"
+
+#. module: app_stock_mts_else_mto
+#: code:addons/app_stock_mts_else_mto/models/stock_rule.py:37
+#, python-format
+msgid "When products are needed in <b>%s</b>, <br/> <b>%s</b> are created from <b>%s</b> to fulfill the need."
+msgstr "当 <b>%s</b> 需要产品时, <br/> <b>%s</b> 将由 <b>%s</b> 创建以用来满足需求。"
+
+#. module: app_stock_mts_else_mto
+#: code:addons/app_stock_mts_else_mto/models/stock_rule.py:38
+#, python-format
+msgid "When products arrive in <b>%s</b>, <br/> <b>%s</b> are created to send them in <b>%s</b>."
+msgstr "当产品到达 <b>%s</b> 时，<br/><b>%s</b> 会被建立并送到 <b>%s</b>。"
+

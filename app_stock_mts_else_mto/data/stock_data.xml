@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--
+             Stock rules
+        -->
+        
+        <!-- set a lower sequence on the mto route than on the resupply routes -->
+        <record id="stock.route_warehouse0_mto" model='stock.location.route'>
+            <field name="name">MTS else MTO</field>
+        </record>
+    </data>
+</odoo>
