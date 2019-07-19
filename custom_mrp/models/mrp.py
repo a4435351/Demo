@@ -29,7 +29,7 @@ class MrpProduction(models.Model):
         original_quantity = (self.product_qty - self.qty_produced) or 1.0
         data = {
             'sequence': bom_line.sequence,
-            'name': 'MRP',
+            'name': bom_line.product_id.product_tmpl_id.x_studio_field_mHzKJ,
             'date': self.date_planned_start,
             'date_expected': self.date_planned_start,
             'bom_line_id': bom_line.id,
@@ -52,6 +52,7 @@ class MrpProduction(models.Model):
             'manufacturer_id': bom_line.product_id.manufacturer_id.id,
             'customer_part_no': bom_line.product_id.name
         }
+        print(data['name'],'+++++++++++++++++++++++++++++++++++++++++++++++++++++')
         return self.env['stock.move'].create(data)
     
     @api.onchange('product_id')
