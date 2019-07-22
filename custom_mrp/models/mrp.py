@@ -64,17 +64,9 @@ class MrpProduction(models.Model):
     @api.model
     def create(self, vals):
         product_id = self.env['product.product'].search([('id','=',vals['product_id'])])
-        vals['storage_location_id'] = product_id.product_tmpl_id.storage_location_id.id
         vals['manufacturer_id'] = product_id.product_tmpl_id.manufacturer_id.id
-        if product_id.product_tmpl_id.x_studio_field_mHzKJ:
-            vals['name'] = product_id.product_tmpl_id.x_studio_field_mHzKJ
-        else:
-            if vals.get('sale_line_id'):
-                sale_line_id = self.env['sale.order.line'].search([('id','=',vals.get('sale_line_id'))])
-                vals['name'] = sale_line_id.name
-            if vals.get('purchase_line_id'):
-                purchase_line_id = self.env['purchase.order.line'].search([('id','=',vals.get('purchase_line_id'))])
-                vals['name'] = purchase_line_id.name
+        vals['customer_part_no'] = product_id.name
+        vals['description'] = product_id.x_studio_field_mHzKJ
         return super(MrpProduction, self).create(vals)
           
 class MrpBomLine(models.Model):
@@ -106,7 +98,15 @@ class StockMove(models.Model):
         product_id = self.env['product.product'].search([('id','=',vals['product_id'])])
         vals['storage_location_id'] = product_id.product_tmpl_id.storage_location_id.id
         vals['manufacturer_id'] = product_id.product_tmpl_id.manufacturer_id.id
-        vals['name'] = product_id.product_tmpl_id.x_studio_field_mHzKJ
+        if product_id.product_tmpl_id.x_studio_field_mHzKJ:
+            vals['name'] = product_id.product_tmpl_id.x_studio_field_mHzKJ
+        else:
+            if vals.get('sale_line_id'):
+                sale_line_id = self.env['sale.order.line'].search([('id','=',vals.get('sale_line_id'))])
+                vals['name'] = sale_line_id.name
+            if vals.get('purchase_line_id'):
+                purchase_line_id = self.env['purchase.order.line'].search([('id','=',vals.get('purchase_line_id'))])
+                vals['name'] = purchase_line_id.name
         return super(StockMove, self).create(vals)
     
     @api.depends('product_uom_qty')
