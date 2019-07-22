@@ -15,7 +15,7 @@ class StockMove(models.Model):
     @api.model
     def create(self, vals):
         if vals.get('product_id'):
-            product_id = self.env['product.template'].browse(vals.get('product_id'))
+            product_id = self.env['product.product'].browse(vals.get('product_id'))
             if product_id:
                 vals['create_date'] = date.today()
                 vals['cost_price'] = product_id.standard_price
@@ -26,7 +26,7 @@ class StockMove(models.Model):
         if vals.get('state')=='done':
             for val in self:
                 if not val.update_date and val.product_id:
-                    product_id = self.env['product.template'].browse(val.product_id.id)
+                    product_id = self.env['product.product'].browse(val.product_id.id)
                     if product_id:
                         val.update_date = date.today()
                         val.cost_price_update = product_id.standard_price
