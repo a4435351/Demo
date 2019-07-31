@@ -19,19 +19,19 @@ class AccountInvoice(models.Model):
                 if rate_id:
                     res.exchange_rate = rate_id.rate
                     res.currency_conv_rate = (1/rate_id.rate)
-                    val = round(res.exchange_rate,2)
+                    val = round(res.currency_conv_rate,2)
                     res.currency_help_label = 'At the operation date, the exchange rate was \n'+res.currency_id.symbol+'1.00 = '+res.company_id.currency_id.symbol+' '+str(val)
                 else:
                     rate_id = self.env['res.currency'].search([('id','=',res.currency_id.id)])
                     res.exchange_rate = rate_id.rate
                     res.currency_conv_rate = (1/rate_id.rate)
-                    val = round(res.exchange_rate,2)
+                    val = round(res.currency_conv_rate,2)
                     res.currency_help_label = 'At the operation date, the exchange rate was \n'+res.currency_id.symbol+'1.00 = '+res.company_id.currency_id.symbol+' '+str(val)
             else:
                 rate_id = self.env['res.currency'].search([('id','=',res.currency_id.id)])
                 res.exchange_rate = rate_id.rate
                 res.currency_conv_rate = (1/rate_id.rate)
-                val = round(res.exchange_rate,2)
+                val = round(res.currency_conv_rate,2)
                 res.currency_help_label = 'At the operation date, the exchange rate was \n'+res.currency_id.symbol+'1.00 = '+res.company_id.currency_id.symbol+' '+str(val)
         else:
             res.exchange_rate = 0.00
@@ -47,19 +47,19 @@ class AccountInvoice(models.Model):
                 if rate_id:
                     self.exchange_rate = rate_id.rate
                     self.currency_conv_rate = (1/rate_id.rate)
-                    val = round(self.exchange_rate,2)
+                    val = round(self.currency_conv_rate,2)
                     self.currency_help_label = 'At the operation date, the exchange rate was \n'+self.currency_id.symbol+'1.00 = '+self.company_id.currency_id.symbol+' '+str(val)
                 else:
                     rate_id = self.env['res.currency'].search([('id','=',self.currency_id.id)])
                     self.exchange_rate = rate_id.rate
                     self.currency_conv_rate = (1/rate_id.rate)
-                    val = round(self.exchange_rate,2)
+                    val = round(self.currency_conv_rate,2)
                     self.currency_help_label = 'At the operation date, the exchange rate was \n'+self.currency_id.symbol+'1.00 = '+self.company_id.currency_id.symbol+' '+str(val)
             else:
                 rate_id = self.env['res.currency'].search([('id','=',self.currency_id.id)])
                 self.exchange_rate = rate_id.rate
                 self.currency_conv_rate = (1/rate_id.rate)
-                val = round(self.exchange_rate,2)
+                val = round(self.currency_conv_rate,2)
                 self.currency_help_label = 'At the operation date, the exchange rate was \n'+self.currency_id.symbol+'1.00 = '+self.company_id.currency_id.symbol+' '+str(val)
         else:
             self.exchange_rate = 0.00
