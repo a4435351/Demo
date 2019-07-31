@@ -16,10 +16,17 @@ class AccountInvoice(models.Model):
         if res.company_id.currency_id != res.currency_id:
             if res.date_invoice:
                 rate_id = self.env['res.currency.rate'].search([('name','=',res.date_invoice),('currency_id','=',res.currency_id.id)])
-                res.exchange_rate = rate_id.rate
-                res.currency_conv_rate = (1/rate_id.rate)
-                val = round(res.exchange_rate,2)
-                res.currency_help_label = 'At the operation date, the exchange rate was \n'+res.currency_id.symbol+'1.00 = '+res.company_id.currency_id.symbol+' '+str(val)
+                if rate_id:
+                    res.exchange_rate = rate_id.rate
+                    res.currency_conv_rate = (1/rate_id.rate)
+                    val = round(res.exchange_rate,2)
+                    res.currency_help_label = 'At the operation date, the exchange rate was \n'+res.currency_id.symbol+'1.00 = '+res.company_id.currency_id.symbol+' '+str(val)
+                else:
+                    rate_id = self.env['res.currency'].search([('id','=',res.currency_id.id)])
+                    res.exchange_rate = rate_id.rate
+                    res.currency_conv_rate = (1/rate_id.rate)
+                    val = round(res.exchange_rate,2)
+                    res.currency_help_label = 'At the operation date, the exchange rate was \n'+res.currency_id.symbol+'1.00 = '+res.company_id.currency_id.symbol+' '+str(val)
             else:
                 rate_id = self.env['res.currency'].search([('id','=',res.currency_id.id)])
                 res.exchange_rate = rate_id.rate
