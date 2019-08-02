@@ -6,6 +6,7 @@ class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
     
     manufacturer_id = fields.Many2one('product.manufacturer',string='Manufacturer')
+    notes = fields.Char(string='Notes')
     
     @api.onchange('product_id')
     def onchange_purchase_line_product(self):

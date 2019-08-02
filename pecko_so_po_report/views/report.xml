@@ -217,6 +217,7 @@
 							<tr style="border-top:1px solid black;border-bottom:1px solid black;">
 								<t t-set="colspan" t-value="5" />
 								<th class="text-left">NO</th>
+								<th class="text-left">PECKO PART NUMBER</th>
 								<th class="text-left">PART NUMBER</th>
 								<th class="text-left">DESCRIPTION</th>
 								<th class="text-right">QUANTITY</th>
@@ -251,10 +252,13 @@
 											<span t-esc="i" />
 										</td>
 										<td>
-											<span t-field="line.product_id" />
+											<span t-field="line.product_id.default_code" />
+<!-- 											<span t-field="line.customer_part_no" />
+ -->										</td>
+
+										<td>
 											<span t-field="line.customer_part_no" />
 										</td>
-
 										<td>
 											<span t-field="line.name" />
 										</td>

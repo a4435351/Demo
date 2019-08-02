@@ -10,6 +10,9 @@
             </xpath> 
             <xpath expr="//field[@name='order_line']//tree//field[@name='company_id']" position="replace">
             </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='taxes_id']" position="after">
+                <field name="notes"/>
+            </xpath>
         </field>
     </record>
 </odoo>

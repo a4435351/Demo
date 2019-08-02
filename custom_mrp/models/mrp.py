@@ -72,12 +72,20 @@ class MrpProduction(models.Model):
 class MrpBomLine(models.Model):
     _inherit = 'mrp.bom.line'
     
-    manufacturer_id = fields.Many2one('product.manufacturer',string='Manufacturer/Customer Name')
+    manufacturer_id = fields.Many2one('product.manufacturer',string='Manufacturer')
+    customer_part_no = fields.Text(string='Part Number',compute="_compute_product_name",store=True)
     
+    @api.depends('product_id')
+    def _compute_product_name(self):
+        for pro in self:
+            if pro.product_id:
+                pro.customer_part_no = pro.product_id.name
+
     @api.onchange('product_id')
     def onchange_mrp_product(self):
         if self.product_id:
             self.manufacturer_id = self.product_id.manufacturer_id
+            self.x_studio_field_gVfQK = self.product_id.default_code
     
 class StockMove(models.Model):
     _inherit = 'stock.move'
