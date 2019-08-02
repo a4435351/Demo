@@ -5,12 +5,20 @@
         <field name="model">product.pricelist</field>
         <field name="inherit_id" ref="product.product_pricelist_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='item_ids']//tree//field[@name='name']" position="after">
+            <xpath expr="//field[@name='item_ids']//tree//field[@name='name']" position="replace">
+                <field name="name" invisible="1"/>
+                <field name="pecko_part_no"/>
                 <field name="customer_part_no"/>
                 <field name="description"/>
                 <field name="manufacturer_id"/>
-            </xpath> 
+            </xpath>
+
+            <!-- <xpath expr="//field[@name='item_ids']//tree//field[@name='name']" position="after">
+                
+            </xpath>  -->
+
         </field>
     </record>
     
+
 </odoo>
