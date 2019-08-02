@@ -203,7 +203,7 @@
                             Grand Total (MYR) : 
                         </td>
                         <td width="18%" style="text-align:right">
-                            <t t-set="ex" t-value="o.exchange_rate" />
+                            <t t-set="ex" t-value="o.currency_conv_rate" />
                             <span t-esc="'%.2f'%(o.amount_untaxed * ex)"/><br/>
                             <span t-esc="'%.2f'%(o.amount_tax * ex)"/><br/>
                             <span t-esc="'%.2f'%(o.amount_total * ex)"/><br/>
