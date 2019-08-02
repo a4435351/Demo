@@ -192,8 +192,10 @@
                     <tr>
                         <td width="25%">
                             For Tax Purpose in MYR Only<br/>
-                            1 USD = <span t-field="o.exchange_rate"/> <span t-field="o.company_currency_id.name"/><br/>
-                            Conversation Rate = <span t-field="o.currency_conv_rate"/>
+                            1 USD = <span t-esc="'%.4f'%(o.currency_conv_rate)"/> <span t-field="o.company_currency_id.name"/><br/>
+                            Conversation Rate = <span t-esc="'%.4f'%(o.currency_conv_rate)"/>
+                            <!-- 1 USD = <span t-esc="'%.4f'% o.currency_conv_rate"/> <span t-field="o.company_currency_id.name"/><br/> -->
+                            
                         </td>
                         <td width="20%" style="text-align:right">
                             Net Total (MYR) : <br/>
@@ -202,9 +204,9 @@
                         </td>
                         <td width="18%" style="text-align:right">
                             <t t-set="ex" t-value="o.exchange_rate" />
-                            <span t-esc="'%.4f'%(o.amount_untaxed * ex)"/><br/>
-                            <span t-esc="'%.4f'%(o.amount_tax * ex)"/><br/>
-                            <span t-esc="'%.4f'%(o.amount_total * ex)"/><br/>
+                            <span t-esc="'%.2f'%(o.amount_untaxed * ex)"/><br/>
+                            <span t-esc="'%.2f'%(o.amount_tax * ex)"/><br/>
+                            <span t-esc="'%.2f'%(o.amount_total * ex)"/><br/>
                         </td>
                         <td width="20%" style="text-align:right">
                             Net Total (<span t-field="o.currency_id" />) : <br/>
