@@ -7,7 +7,7 @@
     'website': 'https://www.pptssolutions.com',
     'category': 'Product',
     'description': """Enhancement in Pricelist module""",
-    'depends': ['product'],
+    'depends': ['product','custom_product'],
     'data': [
          'views/pricelist_view.xml'
     ],

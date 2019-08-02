@@ -85,7 +85,7 @@ class MrpBomLine(models.Model):
     def onchange_mrp_product(self):
         if self.product_id:
             self.manufacturer_id = self.product_id.manufacturer_id
-            self.x_studio_field_gVfQK = self.product_id.default_code
+            self.x_studio_field_gVfQK = self.product_id.product_tmpl_id.x_studio_field_mHzKJ
     
 class StockMove(models.Model):
     _inherit = 'stock.move'
